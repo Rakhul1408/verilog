@@ -1,0 +1,58 @@
+module sequence_detector (
+    input clk,                // Clock signal
+    input reset,              // Reset signal
+    input din,                // Serial data input (1 bit at a time)
+    output reg seq_detected   // Output high when sequence is detected
+);
+    parameter IDLE = 3'b000, S1 = 3'b001, S2 = 3'b010, S3 = 3'b011, S4 = 3'b100;
+    reg [2:0] state, next_state;
+
+    // State transition logic
+    always @(posedge clk or posedge reset) begin
+        if (reset)
+            state <= IDLE;
+        else
+            state <= next_state;
+    end
+
+    // Next state and output logic
+    always @(*) begin
+        seq_detected = 1'b0; // Default to 0
+        case (state)
+            IDLE: begin
+                if (din == 1'b1)
+                    next_state = S1;
+                else
+                    next_state = IDLE;
+            end
+            S1: begin
+                if (din == 1'b0)
+                    next_state = S2;
+                else
+                    next_state = S1;
+            end
+            S2: begin
+                if (din == 1'b1)
+                    next_state = S3;
+                else
+                    next_state = IDLE;
+            end
+            S3: begin
+                if (din == 1'b1) begin
+                    next_state = S4;
+                    seq_detected = 1'b1; // Sequence detected
+                end else
+                    next_state = IDLE;
+            end
+            S4: begin
+                // Remain in S4 or reset to IDLE based on input
+                if (din == 1'b1)
+                    next_state = S1;
+                else
+                    next_state = S2;
+            end
+            default: next_state = IDLE;
+        endcase
+    end
+endmodule
+

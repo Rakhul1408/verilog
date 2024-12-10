@@ -1,0 +1,10 @@
+At time 0, din = 0, seq_detected = 0
+At time 10, din = 1, seq_detected = 0
+At time 20, din = 0, seq_detected = 0
+At time 30, din = 1, seq_detected = 0
+At time 40, din = 1, seq_detected = 1
+At time 50, din = 0, seq_detected = 0
+At time 60, din = 1, seq_detected = 0
+At time 70, din = 0, seq_detected = 0
+At time 80, din = 1, seq_detected = 0
+At time 90, din = 1, seq_detected = 1
